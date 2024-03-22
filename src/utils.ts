@@ -22,3 +22,12 @@ export function writeJson(filePath: string, data: any) {
     'utf8',
   );
 }
+
+export function removeShortOptions(opts: any) {
+  Object.keys(opts).forEach(key => {
+    if (key.length === 1 || key === '--') {
+      delete opts[key];
+    }
+  });
+  return opts;
+}

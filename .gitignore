@@ -19,7 +19,7 @@ pids
 # dependency directory
 bower_components
 jspm_packages
-node_modules
+/node_modules
 web_modules
 
 # cache
@@ -56,5 +56,6 @@ tsconfig.tsbuildinfo
 
 # build output
 build
-dist
 release
+/dist
+dist_cjs

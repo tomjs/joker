@@ -1,0 +1,15 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    "import": "./dist/index.js",
+    "types": "./dist/index.d.ts"
+  },
+  "dependencies": {
+    "@dep/dep1": "1.0.0",
+    "@dep/dep2": "1.0.0",
+    "@dep/dep3": "1.0.0",
+    "dep1": "1.0.0"
+  }
+}

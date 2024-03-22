@@ -1,6 +1,6 @@
 # @tomjs/joker
 
-[![npm](https://img.shields.io/npm/v/@tomjs/joker)](https://www.npmjs.com/package/@tomjs/joker) ![node-current (scoped)](https://img.shields.io/node/v/@tomjs/joker) ![NPM](https://img.shields.io/npm/l/@tomjs/joker) [![Docs](https://www.paka.dev/badges/v0/cute.svg)](https://www.paka.dev/npm/@tomjs/joker)
+[![npm](https://img.shields.io/npm/v/@tomjs/joker)](https://www.npmjs.com/package/@tomjs/joker) ![node-current (scoped)](https://img.shields.io/node/v/@tomjs/joker) ![NPM](https://img.shields.io/npm/l/@tomjs/joker)
 
 [English](./README.md) | **中文**
 
@@ -8,7 +8,7 @@
 
 ## 特性
 
-- 让 `Pure ESM packages` 同时支持 `cjs` 和 `esm`;
+- `joker package` 让 `Pure ESM packages` 同时支持 `cjs` 和 `esm`;
 
 ## 安装
 
@@ -21,4 +21,27 @@ yarn add @tomjs/joker -D
 
 # npm
 npm add @tomjs/joker -D
+```
+
+## 使用
+
+```bash
+joker -h
+
+joker/0.0.0
+
+Usage:
+  $ joker joker <command> [options]
+
+🤡 In order to support some bad development habits, its use is not recommended.
+
+Commands:
+  package [...workspaces]  Let "Pure ESM packages" support both "cjs" and "esm"
+
+For more info, run any command with the `--help` flag:
+  $ joker package --help
+
+Options:
+  -h, --help     Display this message
+  -v, --version  Display version number
 ```
