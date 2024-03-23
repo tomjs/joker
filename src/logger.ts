@@ -2,7 +2,6 @@ import util from 'node:util';
 import chalk from 'chalk';
 
 const PREFIX = '🤡 ';
-process.stdout.write('\x1b[1A');
 
 interface LoggerOptions {
   prefix?: string;

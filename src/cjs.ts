@@ -8,6 +8,7 @@ import { readJson, removeShortOptions, writeJson } from './utils';
 
 export interface CjsCmdOptions {
   commonjs: boolean;
+  onlyTypes: boolean;
   prod: boolean;
   dev: boolean;
   workspaces: string[];
@@ -30,6 +31,13 @@ export function runCjsCmd(cli: CAC) {
 
   ${desc}
   the default directory is the current working directory.`,
+    )
+    .option(
+      '--only-types',
+      `Only add "types" field in package.json to solve the problem that vscode cannot find dts.`,
+      {
+        default: false,
+      },
     )
     .option('--commonjs', `modify the "type" field value of package.json to "commonjs"`, {
       default: false,
@@ -140,7 +148,22 @@ export async function runPackageAction(opts: CjsCmdOptions) {
           }
           pkgCount.total++;
           try {
+            const { onlyTypes } = opts;
+            if (onlyTypes) {
+              if (pkg.types) {
+                logger.info(`[${depName}] has types field, skip it.`);
+                if (!opts.commonjs) {
+                  return;
+                }
+              }
+            }
+
             await handlePkg(depPath, pkg, opts);
+
+            if (!pkg.types) {
+              logger.warn(`[${depName}] fix types field failed, maybe it's not provided.`);
+            }
+
             if (pkg._pure_esm_) {
               logger.success(`[${depName}] is a pure esm package and has been fixed`);
               pkgCount.pure++;
@@ -194,6 +217,23 @@ async function handlePkg(
     pkg.type = 'commonjs';
   }
 
+  if (opts.onlyTypes) {
+    pkg._pure_esm_ = !pkg.main && !pkg.types;
+
+    if (!pkg.types && exports) {
+      const cfg = exports['.'] || exports;
+      if (cfg.types) {
+        pkg.types = cfg.types;
+      } else {
+        const obj = cfg.default || cfg.import;
+        if (typeof obj === 'object') {
+          pkg.types = obj.types;
+        }
+      }
+    }
+    return;
+  }
+
   if (pkg.main) {
     return;
   }
@@ -218,16 +258,7 @@ async function handlePkg(
     return;
   }
 
-  if (opts.commonjs) {
-    const cfg = exports['.'] || exports;
-    if (cfg.default) {
-      cfg.import ||= cfg.default;
-      delete cfg.default;
-    }
-  }
-
   const cfg = exports['.'] || exports;
-
   const ci = cfg.import || cfg.default;
   const isObj = typeof ci === 'object';
   const esm = isObj ? ci.default : ci;
@@ -248,6 +279,14 @@ async function handlePkg(
     } else {
       pkg.types ||= cfg.types;
       cfg.require ||= pkg.main;
+    }
+  }
+
+  if (opts.commonjs) {
+    const cfg = exports['.'] || exports;
+    if (cfg.default) {
+      cfg.import ||= cfg.default;
+      delete cfg.default;
     }
   }
 
