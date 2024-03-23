@@ -8,7 +8,7 @@
 
 ## Features
 
-- `joker package` let `Pure ESM packages` support both `cjs` and `esm`;
+- `joker cjs` let `Pure ESM packages` support both `cjs` and `esm`;
 
 ## Install
 
