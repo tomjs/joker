@@ -36,7 +36,7 @@ Usage:
 🤡 In order to support some bad development habits, its use is not recommended.
 
 Commands:
-  cjs [...workspaces]  Let "Pure ESM packages" support both "cjs" and "esm"
+  cjs [...workspaces]  let "Pure ESM packages" support both "cjs" and "esm"
 
 For more info, run any command with the `--help` flag:
   $ joker cjs --help
