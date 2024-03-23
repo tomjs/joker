@@ -6,8 +6,7 @@ import { build as tsupBuild } from 'tsup';
 import { Logger } from './logger';
 import { readJson, removeShortOptions, writeJson } from './utils';
 
-export interface PackageCmdOptions {
-  cjs: boolean;
+export interface CjsCmdOptions {
   commonjs: boolean;
   prod: boolean;
   dev: boolean;
@@ -16,18 +15,18 @@ export interface PackageCmdOptions {
   include: string[];
 }
 
-const logger = new Logger({ prefix: 'package' });
+const logger = new Logger({ prefix: 'cjs' });
 
-class PackageError extends Error {
+class CjsCmdError extends Error {
   isPackageError = true;
 }
 
-export function runPackageCmd(cli: CAC) {
+export function runCjsCmd(cli: CAC) {
   const desc = `let "Pure ESM packages" support both "cjs" and "esm"`;
   cli
-    .command('package [...workspaces]', desc)
+    .command('cjs [...workspaces]', desc)
     .usage(
-      `package [...workspaces]
+      `cjs [...workspaces]
 
   ${desc}
   the default directory is the current working directory.`,
@@ -58,7 +57,7 @@ export function runPackageCmd(cli: CAC) {
     });
 }
 
-export async function runPackageAction(opts: PackageCmdOptions) {
+export async function runPackageAction(opts: CjsCmdOptions) {
   let { workspaces } = opts;
   if (!Array.isArray(workspaces) || workspaces.length === 0) {
     workspaces = [process.cwd()];
@@ -149,7 +148,7 @@ export async function runPackageAction(opts: PackageCmdOptions) {
               logger.info(`[${depName}] is a support cjs package.`);
             }
           } catch (e: any) {
-            if (e instanceof PackageError) {
+            if (e instanceof CjsCmdError) {
               pkgCount.error++;
               logger.error(`[${depName}] ${e?.message || 'handle package.json error'}`);
             } else {
@@ -184,7 +183,7 @@ export async function runPackageAction(opts: PackageCmdOptions) {
 async function handlePkg(
   depPath: string,
   pkg: any,
-  opts: PackageCmdOptions,
+  opts: CjsCmdOptions,
 ): Promise<string | undefined> {
   const CJS_DIST_NAME = 'dist_cjs';
   const CJS_DIST_PATH = path.join(depPath, CJS_DIST_NAME);
@@ -213,7 +212,7 @@ async function handlePkg(
         types: pkg.types,
       };
     } else {
-      throw new PackageError(`can't find 'main', 'module' and 'exports' in package.json`);
+      throw new CjsCmdError(`can't find 'main', 'module' and 'exports' in package.json`);
     }
 
     return;
@@ -256,7 +255,7 @@ async function handlePkg(
     const name = await esm2cjs(path.join(depPath, esmPath), CJS_DIST_PATH);
 
     if (!name) {
-      throw new PackageError(`convert esm to cjs file failed`);
+      throw new CjsCmdError(`convert esm to cjs file failed`);
     }
 
     pkg.main = `./${CJS_DIST_NAME}/${name}`;

@@ -1,6 +1,6 @@
 import path from 'node:path';
 import fs from 'fs-extra';
-import { runPackageAction } from '../src/package';
+import { runPackageAction } from '../src/cjs';
 
 const SRC_DIR = path.join(__dirname, 'fixtures', 'package');
 const TEST_DIR = path.join(__dirname, '.temp', 'package');

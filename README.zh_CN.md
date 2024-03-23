@@ -8,7 +8,7 @@
 
 ## 特性
 
-- `joker package` 让 `Pure ESM packages` 同时支持 `cjs` 和 `esm`;
+- `joker cjs` 让 `Pure ESM packages` 同时支持 `cjs` 和 `esm`;
 
 ## 安装
 
@@ -31,15 +31,15 @@ joker -h
 joker/0.0.0
 
 Usage:
-  $ joker joker <command> [options]
+  $ joker <command> [options]
 
 🤡 In order to support some bad development habits, its use is not recommended.
 
 Commands:
-  package [...workspaces]  Let "Pure ESM packages" support both "cjs" and "esm"
+  cjs [...workspaces]  Let "Pure ESM packages" support both "cjs" and "esm"
 
 For more info, run any command with the `--help` flag:
-  $ joker package --help
+  $ joker cjs --help
 
 Options:
   -h, --help     Display this message
