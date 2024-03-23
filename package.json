@@ -1,6 +1,6 @@
 {
   "name": "@tomjs/joker",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "🤡 In order to support some bad development habits, its use is not recommended.",
   "keywords": [
     "cli",
