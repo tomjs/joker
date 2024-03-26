@@ -44,12 +44,14 @@ export function runCjsCmd(cli: CAC) {
     })
     .option('--exclude [exclude]', `do not modify these specified packages`, {
       type: [String],
+      default: [],
     })
     .option(
       '--include [include]',
       `only modify these specified packages.If not set, the root directory package.json dependency will be read by default.`,
       {
         type: [String],
+        default: [],
       },
     )
     .option('--prod', `read 'dependencies' from package.json`, {
@@ -67,6 +69,8 @@ export function runCjsCmd(cli: CAC) {
 
 export async function runPackageAction(opts: CjsCmdOptions) {
   let { workspaces } = opts;
+
+  console.log('opts:', opts);
   if (!Array.isArray(workspaces) || workspaces.length === 0) {
     workspaces = [process.cwd()];
   }
